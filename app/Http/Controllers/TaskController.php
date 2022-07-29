@@ -19,7 +19,6 @@ class TaskController extends Controller
      */
     public function index()
     {
-    //    $tasks = Task::paginate();
        return response()->json(TaskResource::collection(Task::paginate(10))->response()->getData());
     }
 
@@ -48,8 +47,7 @@ class TaskController extends Controller
         
         if($validator->fails()){
             return response()->json([
-                'error' => true,
-                'message' => $validator->errors()
+                'errors' => $validator->errors()
             ]);
         }
         $user = auth()->user();
@@ -97,7 +95,7 @@ class TaskController extends Controller
         $task=Task::find($id);
         $task->update($request->all());
         return response()->json(new TaskDetailsResource($task));
-        }
+    }
 
     /**
      * Remove the specified resource from storage.
