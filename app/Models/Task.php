@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
-
+    protected $fillable = [
+        'title',
+        'description',
+        'assigned_to',
+        'assigned_by',
+        'assigned_at',
+        'created_at',
+        'updated_at'
+    ];
+    
     public function assigner()
     {
         return $this->belongsTo(User::class, 'assigned_by');
