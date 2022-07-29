@@ -17,9 +17,15 @@ class Task extends Model
         'created_at',
         'updated_at'
     ];
-    
+
     public function assigner()
     {
         return $this->belongsTo(User::class, 'assigned_by');
     }
+
+    public function assigned()
+    {
+        return $this->belongsTo(Member::class, 'assigned_to');
+    }
+
 }

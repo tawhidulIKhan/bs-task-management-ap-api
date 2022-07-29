@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskDetailsResource;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,8 +19,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-       $tasks = Task::paginate(10);
-       return response()->json( $tasks);
+    //    $tasks = Task::paginate();
+       return response()->json(TaskResource::collection(Task::paginate(10))->response()->getData());
     }
 
     /**
@@ -50,12 +52,12 @@ class TaskController extends Controller
                 'message' => $validator->errors()
             ]);
         }
-
         $user = auth()->user();
         $task = Task::create([
             'title' => $request->title,
             'description' => $request->description,
-            'assigned_by' => $user->id
+            'assigned_by' => $user->id,
+            'assigned_to' => $request->assigned_to
         ]);
         return response()->json($task);
     }
@@ -66,9 +68,10 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show($id)
     {
-        //
+        $task = Task::firstWhere(['id' => $id]);
+        return response()->json(new TaskDetailsResource($task));
     }
 
     /**
@@ -89,10 +92,12 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, $id)
     {
-        //
-    }
+        $task=Task::find($id);
+        $task->update($request->all());
+        return response()->json(new TaskDetailsResource($task));
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -100,8 +105,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        //
+        Task::destroy($id);
+        return response()->json([
+            'success' => true
+        ]);
     }
 }
