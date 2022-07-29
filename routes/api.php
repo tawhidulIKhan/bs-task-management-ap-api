@@ -30,6 +30,9 @@ Route::group([
         Route::delete('tasks/{id}', [TaskController::class, 'destroy']);
         Route::get('members', [MemberController::class, 'all']);
         Route::post('members/create', [MemberController::class, 'store']);
+        Route::get('members/{id}', [MemberController::class, 'show']);
+        Route::put('members/{id}', [MemberController::class, 'update']);
+        Route::delete('members/{id}', [MemberController::class, 'destroy']);
     });
     
 });

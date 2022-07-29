@@ -17,8 +17,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::paginate(10);
-        return response()->json( $members);
+        return response()->json(MemberResource::collection(Member::paginate(10))->response()->getData());
     }
 
     public function all()
@@ -54,8 +53,7 @@ class MemberController extends Controller
         
         if($validator->fails()){
             return response()->json([
-                'error' => true,
-                'message' => $validator->errors()
+                'errors' => $validator->errors()
             ]);
         }
 
@@ -72,9 +70,10 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show($id)
     {
-        //
+        $member = Member::firstWhere(['id' => $id]);
+        return response()->json($member);
     }
 
     /**
@@ -95,9 +94,12 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMemberRequest $request, Member $member)
+    public function update(UpdateMemberRequest $request, $id)
     {
-        //
+        $member=Member::find($id);
+        $member->update($request->all());
+        return response()->json(new MemberResource($member));
+
     }
 
     /**
@@ -106,8 +108,11 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Member $member)
+    public function destroy($id)
     {
-        //
+        Member::destroy($id);
+        return response()->json([
+            'success' => true
+        ]);
     }
 }
