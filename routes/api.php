@@ -23,6 +23,7 @@ Route::group([
     });   
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('tasks', [TaskController::class, 'index']);
+        Route::post('tasks/create', [TaskController::class, 'store']);
     });
     
 });
