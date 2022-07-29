@@ -17,9 +17,9 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->bigInteger('assignedTo')->nullable();
-            $table->bigInteger('assignedBy')->nullable();
-            $table->bigInteger('assignedAt')->nullable();
+            $table->bigInteger('assigned_to')->nullable();
+            $table->bigInteger('assigned_by')->nullable();
+            $table->bigInteger('assigned_at')->nullable();
             $table->timestamps();
         });
     }
