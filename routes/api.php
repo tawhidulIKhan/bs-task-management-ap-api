@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,12 +15,16 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::group([
-    'middleware' => 'api' 
+    'middleware' => 'api',
 ], function(){
     Route::group(['middleware' => 'guest:api'], function(){
         Route::post('register', [UserController::class, 'register']);
         Route::post('login', [UserController::class, 'login']);
-    });    
+    });   
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('tasks', [TaskController::class, 'index']);
+    });
+    
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
