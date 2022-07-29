@@ -28,7 +28,8 @@ Route::group([
         Route::get('tasks/{id}', [TaskController::class, 'show']);
         Route::put('tasks/{id}', [TaskController::class, 'update']);
         Route::delete('tasks/{id}', [TaskController::class, 'destroy']);
-        Route::get('members', [MemberController::class, 'all']);
+        Route::get('members', [MemberController::class, 'index']);
+        Route::get('members/all', [MemberController::class, 'all']);
         Route::post('members/create', [MemberController::class, 'store']);
         Route::get('members/{id}', [MemberController::class, 'show']);
         Route::put('members/{id}', [MemberController::class, 'update']);
