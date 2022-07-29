@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
+use Illuminate\Support\Facades\Validator;
+
 
 class TaskController extends Controller
 {
@@ -15,7 +17,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-       
+       $tasks = Task::paginate(10);
+       return response()->json( $tasks);
     }
 
     /**
@@ -25,7 +28,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -36,7 +39,25 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'nullable',
+        ]);
+        
+        if($validator->fails()){
+            return response()->json([
+                'error' => true,
+                'message' => $validator->errors()
+            ]);
+        }
+
+        $user = auth()->user();
+        $task = Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'assigned_by' => $user->id
+        ]);
+        return response()->json($task);
     }
 
     /**
