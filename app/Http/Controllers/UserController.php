@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function login (Request $request) {
         $login_credentials=[
-            'email'=>$request->email,
+            'username'=>$request->username,
             'password'=>$request->password,
         ];
         if(auth()->attempt($login_credentials)){
@@ -33,7 +33,7 @@ class UserController extends Controller
     {
      $validator = Validator::make($request->all(), [
         'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
+        'username' => 'required|string|unique:users',
         'password' => 'required|string|min:6|confirmed',
     ]);
     if ($validator->fails())
