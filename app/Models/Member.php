@@ -13,4 +13,9 @@ class Member extends Model
         'name',
         'email'
     ];
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
 }
