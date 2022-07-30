@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+use App\Http\Resources\MemberDetailsResource;
 use App\Http\Resources\MemberResource;
 use App\Models\Member;
 use Illuminate\Support\Facades\Validator;
@@ -73,7 +74,7 @@ class MemberController extends Controller
     public function show($id)
     {
         $member = Member::firstWhere(['id' => $id]);
-        return response()->json($member);
+        return response()->json(new MemberDetailsResource($member));
     }
 
     /**
