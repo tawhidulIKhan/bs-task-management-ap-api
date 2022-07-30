@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MemberResource extends JsonResource
@@ -18,7 +19,8 @@ class MemberResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'tasks' => $this->tasks
+            'tasks' => $this->tasks,
+            'created_at' => Carbon::parse($this->created_at)->format('d M, Y - h:m a')
         ];
     }
 }
